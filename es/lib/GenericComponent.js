@@ -287,7 +287,7 @@ var GenericComponent = function (_Component) {
 
 			var suffix = isDefined(chartId) ? "-" + chartId : "";
 
-			var style = clip ? { "clipPath": "url(#chart-area-5clip" + suffix + ")" } : null;
+			var style = clip ? { "clipPath": "url(#chart-area-clip" + suffix + ")" } : null;
 
 			return React.createElement(
 				"g",

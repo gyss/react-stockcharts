@@ -1907,7 +1907,7 @@ var GenericComponent = function (_Component) {
 
 			var suffix = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__utils__["isDefined"])(chartId) ? "-" + chartId : "";
 
-			var style = clip ? { "clipPath": "url(#chart-area-5clip" + suffix + ")" } : null;
+			var style = clip ? { "clipPath": "url(#chart-area-clip" + suffix + ")" } : null;
 
 			return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
 				"g",
@@ -11164,7 +11164,7 @@ var ChartCanvas = function (_Component) {
 						null,
 						__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
 							"clipPath",
-							{ id: "chart-area-3clip", lol: "mek" },
+							{ id: "chart-area-clip" },
 							__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("rect", { x: "0", y: "0", width: dimensions.width, height: dimensions.height })
 						),
 						__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
@@ -11176,7 +11176,7 @@ var ChartCanvas = function (_Component) {
 						chartConfig.map(function (each, idx) {
 							return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
 								"clipPath",
-								{ key: idx, id: "chart2-area-clip-" + each.id },
+								{ key: idx, id: "chart-area-clip-" + each.id },
 								__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("rect", { x: "0", y: "0", width: each.width, height: each.height })
 							);
 						})

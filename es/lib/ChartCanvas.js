@@ -949,7 +949,7 @@ var ChartCanvas = function (_Component) {
 						null,
 						React.createElement(
 							"clipPath",
-							{ id: "chart-area-3clip", lol: "mek" },
+							{ id: "chart-area-clip" },
 							React.createElement("rect", { x: "0", y: "0", width: dimensions.width, height: dimensions.height })
 						),
 						React.createElement(
@@ -961,7 +961,7 @@ var ChartCanvas = function (_Component) {
 						chartConfig.map(function (each, idx) {
 							return React.createElement(
 								"clipPath",
-								{ key: idx, id: "chart2-area-clip-" + each.id },
+								{ key: idx, id: "chart-area-clip-" + each.id },
 								React.createElement("rect", { x: "0", y: "0", width: each.width, height: each.height })
 							);
 						})
