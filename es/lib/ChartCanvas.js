@@ -949,8 +949,8 @@ var ChartCanvas = function (_Component) {
 						React.createElement(
 							"linearGradient",
 							{ id: "Gradient2", x1: "0", x2: "0", y1: "0", y2: "1" },
-							React.createElement("stop", { offset: "40%", "stop-color": "#94B6FF", "stop-opacity": "0.5" }),
-							React.createElement("stop", { offset: "100%", "stop-color": "black", "stop-opacity": "0" })
+							React.createElement("stop", { offset: "40%", stopColor: "#94B6FF", stopOpacity: "0.5" }),
+							React.createElement("stop", { offset: "100%", stopColor: "black", stopOpacity: "0" })
 						),
 						chartConfig.map(function (each, idx) {
 							return React.createElement(
