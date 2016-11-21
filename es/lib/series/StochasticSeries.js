@@ -73,13 +73,8 @@ var StochasticSeries = function (_Component) {
 
 function getHorizontalLine(props, yValue, stroke) {
 
-	/* eslint-disable react/prop-types */
-	var yAccessor = props.yAccessor;
-	/* eslint-enable react/prop-types */
-
 	return React.createElement(StraightLine, {
 		stroke: stroke, opacity: 0.3,
-		yAccessor: yAccessor,
 		yValue: yValue });
 }
 

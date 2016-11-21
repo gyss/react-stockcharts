@@ -17,6 +17,10 @@ import PureComponent from "./PureComponent";
 
 export { accumulatingWindow, mappedSlidingWindow, merge, identity, noop, shallowEqual, slidingWindow, zipper, PureComponent };
 
+export function getLogger(prefix) {
+	return process.env.NODE_ENV !== "production" ? require("debug")("react-stockcharts:" + prefix) : noop;
+}
+
 export function path() {
 	var path = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : [];
 

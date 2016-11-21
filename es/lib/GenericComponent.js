@@ -82,7 +82,7 @@ var GenericComponent = function (_Component) {
 	}, {
 		key: "evaluateType",
 		value: function evaluateType(type, e) {
-			// if (this.props.debug) console.log(this.props.debug, type);
+			this.props.debug(type);
 
 			switch (type) {
 				case "zoom":
@@ -140,7 +140,7 @@ var GenericComponent = function (_Component) {
 						}
 					}
 			}
-			if (this.props.debug) console.log(this.props.debug, type, this.drawOnNextTick);
+			this.props.debug(type, this.drawOnNextTick);
 
 			// if (type !== "mousemove" && type !== "ff") this.moreProps.prevHovering = false;
 		}
@@ -193,7 +193,7 @@ var GenericComponent = function (_Component) {
 			var canvasDraw = this.props.canvasDraw;
 
 
-			if (this.props.debug) console.log(this.props.debug, "updated");
+			this.props.debug("updated");
 
 			if (isDefined(canvasDraw) && chartCanvasType !== "svg") {
 				this.drawOnCanvas();
@@ -206,7 +206,7 @@ var GenericComponent = function (_Component) {
 			    plotData = nextContext.plotData,
 			    chartConfig = nextContext.chartConfig;
 
-			if (this.props.debug) console.log(nextContext);
+			this.props.debug(nextContext);
 			this.moreProps = _extends({}, this.moreProps, {
 				xScale: xScale, plotData: plotData, chartConfig: chartConfig
 			});
@@ -318,7 +318,7 @@ GenericComponent.propTypes = {
 	onMouseMove: PropTypes.func,
 	onMouseDown: PropTypes.func,
 
-	debug: PropTypes.string
+	debug: PropTypes.func
 };
 
 GenericComponent.defaultProps = {
@@ -337,7 +337,8 @@ GenericComponent.defaultProps = {
 	edgeClip: false,
 	isHover: functor(false),
 	onMouseMove: noop,
-	onMouseDown: noop
+	onMouseDown: noop,
+	debug: noop
 };
 
 GenericComponent.childContextTypes = {

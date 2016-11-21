@@ -17,7 +17,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 import React, { PropTypes, Component } from "react";
 import { extent as d3Extent, min, max } from "d3-array";
 
-import { first, last, isDefined, isNotDefined, clearCanvas, shallowEqual, identity, noop, functor } from "./utils";
+import { first, last, isDefined, isNotDefined, clearCanvas, shallowEqual, identity, noop, functor, getLogger } from "./utils";
 
 import { getNewChartConfig, getChartConfigWithUpdatedYScales, getCurrentCharts, getCurrentItem } from "./utils/ChartDataUtil";
 
@@ -26,10 +26,10 @@ import EventCapture from "./EventCapture";
 import CanvasContainer from "./CanvasContainer";
 import evaluator from "./scale/evaluator";
 
+var log = getLogger("ChartCanvas");
+
 var CANDIDATES_FOR_RESET = ["seriesName", /* "data",*/
 "xScaleProvider", /* "xAccessor",*/"map", "indexAccessor", "indexMutator"];
-
-var debug = true;
 
 function shouldResetChart(thisProps, nextProps) {
 	return !CANDIDATES_FOR_RESET.every(function (key) {
@@ -64,7 +64,8 @@ function calculateFullData(props) {
 	var inputData = props.data,
 	    calculator = props.calculator,
 	    plotFull = props.plotFull,
-	    xScaleProp = props.xScale;
+	    xScaleProp = props.xScale,
+	    clamp = props.clamp;
 	var inputXAccesor = props.xAccessor,
 	    map = props.map,
 	    xScaleProvider = props.xScaleProvider,
@@ -81,7 +82,7 @@ function calculateFullData(props) {
 	// .intervalCalculator(intervalCalculator)
 	.xAccessor(inputXAccesor)
 	// .discontinuous(discontinuous)
-	.indexAccessor(indexAccessor).indexMutator(indexMutator).map(map).useWholeData(wholeData).width(dimensions.width).scaleProvider(xScaleProvider).xScale(xScaleProp).calculator(calculator);
+	.indexAccessor(indexAccessor).indexMutator(indexMutator).map(map).useWholeData(wholeData).width(dimensions.width).scaleProvider(xScaleProvider).xScale(xScaleProp).clamp(clamp).calculator(calculator);
 
 	var _evaluate = evaluate(inputData),
 	    xAccessor = _evaluate.xAccessor,
@@ -95,10 +96,8 @@ function calculateFullData(props) {
 function resetChart(props) {
 	var firstCalculation = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : false;
 
-	if (debug) {
-		if (process.env.NODE_ENV !== "production") {
-			if (!firstCalculation) console.log("CHART RESET");
-		}
+	if (process.env.NODE_ENV !== "production") {
+		if (!firstCalculation) log("CHART RESET");
 	}
 
 	var state = calculateState(props);
@@ -134,10 +133,8 @@ function updateChart(newState, initialXScale, props, lastItemWasVisible) {
 	    start = _initialXScale$domain2[0],
 	    end = _initialXScale$domain2[1];
 
-	if (debug) {
-		if (process.env.NODE_ENV !== "production") {
-			console.log("TRIVIAL CHANGE");
-		}
+	if (process.env.NODE_ENV !== "production") {
+		log("TRIVIAL CHANGE");
 	}
 
 	var postCalculator = props.postCalculator,
@@ -298,7 +295,9 @@ var ChartCanvas = function (_Component) {
 	_createClass(ChartCanvas, [{
 		key: "getDataInfo",
 		value: function getDataInfo() {
-			return this.state;
+			return _extends({}, this.state, {
+				fullData: this.fullData
+			});
 		}
 	}, {
 		key: "getCanvasContexts",
@@ -729,7 +728,8 @@ var ChartCanvas = function (_Component) {
 	}, {
 		key: "handleDoubleClick",
 		value: function handleDoubleClick(mousePosition, e) {
-			if (debug) console.log("double clicked");
+			// if (debug) console.log("double clicked");
+			log("double clicked");
 			this.triggerEvent("dblclick", {}, e);
 		}
 	}, {
@@ -818,10 +818,8 @@ var ChartCanvas = function (_Component) {
 
 			var newState;
 			if (!interaction || reset || !shallowEqual(this.props.xExtents, nextProps.xExtents)) {
-				if (debug) {
-					if (process.env.NODE_ENV !== "production") {
-						if (!interaction) console.log("RESET CHART, changes to a non interactive chart");else if (reset) console.log("RESET CHART, one or more of these props changed", CANDIDATES_FOR_RESET);else console.log("xExtents changed");
-					}
+				if (process.env.NODE_ENV !== "production") {
+					if (!interaction) log("RESET CHART, changes to a non interactive chart");else if (reset) log("RESET CHART, one or more of these props changed", CANDIDATES_FOR_RESET);else log("xExtents changed");
 				}
 				// do reset
 				newState = resetChart(nextProps);
@@ -838,10 +836,8 @@ var ChartCanvas = function (_Component) {
 
 				var lastItemWasVisible = xAccessor(prevLastItem) <= end && xAccessor(prevLastItem) >= start;
 
-				if (debug) {
-					if (process.env.NODE_ENV !== "production") {
-						if (this.props.data !== nextProps.data) console.log("data is changed but seriesName did not, change the seriesName if you wish to reset the chart and lastItemWasVisible = ", lastItemWasVisible);else if (!shallowEqual(this.props.calculator, nextProps.calculator)) console.log("calculator changed");else console.log("Trivial change, may be width/height or type changed, but that does not matter");
-					}
+				if (process.env.NODE_ENV !== "production") {
+					if (this.props.data !== nextProps.data) log("data is changed but seriesName did not, change the seriesName if you wish to reset the chart and lastItemWasVisible = ", lastItemWasVisible);else if (!shallowEqual(this.props.calculator, nextProps.calculator)) log("calculator changed");else log("Trivial change, may be width/height or type changed, but that does not matter");
 				}
 				newState = updateChart(calculatedState, this.state.xScale, nextProps, lastItemWasVisible);
 			}
@@ -854,10 +850,8 @@ var ChartCanvas = function (_Component) {
 
 
 			if (this.panInProgress) {
-				if (debug) {
-					if (process.env.NODE_ENV !== "production") {
-						console.log("Pan is in progress");
-					}
+				if (process.env.NODE_ENV !== "production") {
+					log("Pan is in progress");
 				}
 			} else {
 				if (!reset) {
@@ -955,8 +949,8 @@ var ChartCanvas = function (_Component) {
 						React.createElement(
 							"linearGradient",
 							{ id: "Gradient2", x1: "0", x2: "0", y1: "0", y2: "1" },
-							React.createElement("stop", { offset: "0%", stopColor: "#94B6FF", stopOpacity: "0.5" }),
-							React.createElement("stop", { offset: "100%", stopColor: "black", stopOpacity: "0" })
+							React.createElement("stop", { offset: "40%", "stop-color": "#94B6FF", "stop-opacity": "0.5" }),
+							React.createElement("stop", { offset: "100%", "stop-color": "black", "stop-opacity": "0" })
 						),
 						chartConfig.map(function (each, idx) {
 							return React.createElement(

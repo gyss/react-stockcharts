@@ -9,7 +9,9 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
 import React, { PropTypes, Component } from "react";
-import { isDefined } from "./utils";
+import { isDefined, getLogger } from "./utils";
+
+var log = getLogger("CanvasContainer");
 
 var CanvasContainer = function (_Component) {
 	_inherits(CanvasContainer, _Component);
@@ -47,7 +49,9 @@ var CanvasContainer = function (_Component) {
 			    ratio = _props.ratio;
 
 			if (type === "svg") return null;
-			// console.log("using ratio ", ratio);
+
+			log("using ratio ", ratio);
+
 			return React.createElement(
 				"div",
 				{ style: { position: "absolute", zIndex: zIndex } },
@@ -63,11 +67,6 @@ var CanvasContainer = function (_Component) {
 
 	return CanvasContainer;
 }(Component);
-
-/*
-				<canvas ref="canvas_interactive" width={width} height={height}
-					style={{ position: "absolute", left: 0, top: 0 }} />
-*/
 
 CanvasContainer.propTypes = {
 	width: PropTypes.number.isRequired,

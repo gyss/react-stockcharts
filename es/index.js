@@ -27,6 +27,6 @@ import * as helper from "./lib/helper";
 import * as interactive from "./lib/interactive";
 import * as utils from "./lib/utils";
 
-var version = "0.6.0-beta.7";
+var version = "0.6.0-beta.8";
 
 export { ChartCanvas, Chart, GenericChartComponent, GenericComponent, BackgroundText, series, coordinates, indicator, algorithm, axes, scale, tooltip, annotation, helper, interactive, version, utils, getAxisCanvas };

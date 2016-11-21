@@ -75,7 +75,7 @@ function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj;
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var version = "0.6.0-beta.7";
+var version = "0.6.0-beta.8";
 
 // chart types & Series
 exports.ChartCanvas = _ChartCanvas2.default;
